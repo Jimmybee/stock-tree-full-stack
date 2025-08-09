@@ -1,0 +1,74 @@
+name: Ruby CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    name: Specs and Lint (${{ matrix.os }}, Ruby ${{ matrix.ruby }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        ruby: [ '3.3' ]
+
+    services:
+      postgres:
+        image: postgres:16
+        ports: [ '5432:5432' ]
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: stock_tree_full_test
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      # Database connection for Rails
+      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: stock_tree_full_test
+      # Devise JWT secret for tests
+      DEVISE_JWT_SECRET_KEY: test_jwt_secret_key
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev postgresql-client
+
+      - name: Wait for Postgres
+        run: |
+          until pg_isready -h 127.0.0.1 -p 5432 -U postgres; do echo "Waiting for Postgres..."; sleep 1; done
+
+      - name: Setup database
+        run: |
+          bin/rails db:setup
+          bin/rails db:migrate
+
+      - name: Run RSpec
+        run: |
+          bundle exec rspec --format progress
+
+      - name: Run RuboCop
+        run: |
+          bundle exec rubocop --format progress

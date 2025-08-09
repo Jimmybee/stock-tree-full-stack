@@ -1,5 +1,7 @@
 # Stock Tree (Full-Stack)
 
+![Ruby CI](https://github.com/Jimmybee/stock-tree-full-stack/actions/workflows/ci.yml/badge.svg)
+
 Full-stack rebuild of Stock Tree: a team-based inventory system with a nested folder tree, products with images/tags/batches, and an integrated web UI.
 
 ## Status
@@ -33,10 +35,21 @@ Prereqs: Ruby 3.3, PostgreSQL (or Docker), Node is not required (importmap), Tai
 Setup
 
 1. Copy env and set secrets
-	- cp .env.example .env
-	- echo "DEVISE_JWT_SECRET_KEY=$(bin/rails secret)" >> .env
-2. Start Postgres (Docker)
-	- docker compose up -d db
-3. Prepare DB and run
-	- bin/rails db:prepare
-	- bin/dev
+
+- cp .env.example .env
+- echo "DEVISE_JWT_SECRET_KEY=$(bin/rails secret)" >> .env
+
+1. Start Postgres (Docker)
+
+- docker compose up -d db
+
+1. Prepare DB and run
+
+- bin/rails db:prepare
+- bin/dev
+
+## Common issues
+
+- Postgres connection refused: ensure Docker DB is running on port 55432 and your `.env` matches `docker-compose.yml`.
+- Missing DEVISE_JWT_SECRET_KEY: generate one with `bin/rails secret` and add it to `.env`.
+- Node not required: this app uses importmap and tailwindcss-rails; no npm/yarn setup needed.

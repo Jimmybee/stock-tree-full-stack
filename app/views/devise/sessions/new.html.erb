@@ -1,0 +1,16 @@
+<div class="max-w-md mx-auto">
+  <h1 class="text-2xl font-semibold mb-4">Sign in</h1>
+  <%= form_with(scope: :user, url: session_path(:user), data: { turbo: true }, class: "space-y-4") do |f| %>
+    <div>
+      <%= f.label :email, class: "block text-sm font-medium" %>
+      <%= f.email_field :email, autofocus: true, class: "mt-1 block w-full border rounded px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :password, class: "block text-sm font-medium" %>
+      <%= f.password_field :password, autocomplete: "current-password", class: "mt-1 block w-full border rounded px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.submit "Sign in", class: "btn btn-primary px-4 py-2 bg-blue-600 text-white rounded" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,55 @@
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.3
+  Exclude:
+    - 'Gemfile'
+    - 'Rakefile'
+    - 'config.ru'
+    - 'config/**/*'
+    - 'db/**/*'
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'spec/**/*'
+
+plugins:
+  - rubocop-rails
+  - rubocop-performance
+
+Rails:
+  Enabled: true
+
+Layout/LineLength:
+  Max: 120
+  Enabled: true
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+Performance:
+  Enabled: true
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+Layout/AccessModifierIndentation:
+  Enabled: false
+
+# Early-phase style relaxations to keep CI green; tighten later
+Style/StringLiterals:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/SymbolArray:
+  Enabled: false
+Rails/I18nLocaleTexts:
+  Enabled: false
+Layout/IndentationStyle:
+  Enabled: false
+Layout/IndentationWidth:
+  Enabled: false
+Layout/EmptyLinesAfterModuleInclusion:
+  Enabled: false

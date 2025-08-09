@@ -12,7 +12,22 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <div class="container mx-auto mt-6 px-5">
+      <% flash.each do |type, msg| %>
+        <div class="mb-4 p-3 rounded bg-yellow-100 text-yellow-900">
+          <%= msg %>
+        </div>
+      <% end %>
+      <div class="flex justify-end space-x-3">
+        <% if user_signed_in? %>
+          <span class="text-sm text-gray-700">Signed in as <%= current_user.email %></span>
+          <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'px-3 py-1 bg-gray-200 rounded' %>
+        <% else %>
+          <%= link_to 'Sign in', new_user_session_path, class: 'px-3 py-1 bg-blue-600 text-white rounded' %>
+        <% end %>
+      </div>
+    </div>
+    <main class="container mx-auto mt-4 px-5 flex">
       <%= yield %>
     </main>
   </body>

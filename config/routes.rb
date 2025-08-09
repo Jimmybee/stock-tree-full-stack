@@ -9,6 +9,17 @@ Rails.application.routes.draw do
   # Simple JSON health endpoint
   get "/health", to: "health#show"
 
+  # API auth
+  namespace :api do
+    post "/login", to: "auth#login"
+    post "/register", to: "auth#register"
+
+    namespace :v1 do
+  resource :user, only: [:show, :update]
+  resources :teams, only: [:index, :create]
+    end
+  end
+
   # Defines the root path route ("/")
   root to: "health#show"
 end

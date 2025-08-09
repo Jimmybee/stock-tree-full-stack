@@ -1,0 +1,66 @@
+# See https://github.com/github/gitignore/blob/main/Rails.gitignore
+
+*.rbc
+capybara-*.html
+.rspec
+/log
+/tmp
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-*
+/public/system
+/coverage/
+/spec/tmp
+*.orig
+rerun.txt
+pickle-email-*.html
+
+# OS / Editor
+.DS_Store
+*.swp
+*~
+.project
+.idea
+.secret
+/.vscode/
+
+# Rails specific
+/config/database.yml
+/config/master.key
+/config/credentials.yml.enc
+/config/credentials/*.enc
+/config/credentials/*.key
+/storage/*
+!/storage/.keep
+/tmp/pids
+/tmp/cache
+/tmp/sockets
+/tmp/storage
+/public/assets
+.byebug_history
+
+# Active Storage
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+# Node / Yarn / JS
+/node_modules/
+/yarn-error.log
+**/.yarn-integrity
+
+# Bundler
+/vendor/bundle
+
+# RSpec
+/spec/examples.txt
+
+# Docs/coverage
+/coverage/
+
+# Redis & Sidekiq
+/dump.rdb
+
+# dotenv
+.env
+.env.*
+!.env.example

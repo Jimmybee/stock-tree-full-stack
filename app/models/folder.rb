@@ -12,7 +12,7 @@
 class Folder < ApplicationRecord
   belongs_to :team
   belongs_to :parent, class_name: 'Folder', optional: true
-  has_many :subfolders, class_name: 'Folder', foreign_key: :parent_id, dependent: :destroy
+  has_many :subfolders, class_name: 'Folder', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
 
   validates :name, presence: true
 end

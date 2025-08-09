@@ -3,19 +3,20 @@ class Api::V1::TeamsController < ApplicationController
 
   def index
   teams = policy_scope(Team).order(:name)
-    render json: { teams: teams.as_json(only: %i[id name]) }
+  render json: { teams: teams.as_json(only: %i[id name]) }
   end
 
   def create
   team = Team.new(team_params)
   authorize team
   if team.save
-      TeamsUser.create!(team: team, user: current_user)
-      Folders::CreateRoot.call(team)
-      render json: { team: team.as_json(only: %i[id name]) }, status: :created
-    else
-      render json: { errors: team.errors.map { |e| { field: e.attribute, message: e.message } } }, status: :unprocessable_entity
-    end
+    TeamsUser.create!(team: team, user: current_user)
+    Folders::CreateRoot.call(team)
+    render json: { team: team.as_json(only: %i[id name]) }, status: :created
+  else
+    err = team.errors.map { |e| { field: e.attribute, message: e.message } }
+    render json: { errors: err }, status: :unprocessable_entity
+  end
   end
 
   private

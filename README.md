@@ -8,8 +8,8 @@ New repository scaffolding. Planning and setup tracked in Issues and Project boa
 
 ## Quick links
 
-- Issues: https://github.com/Jimmybee/stock-tree-full-stack/issues
-- Project board (create): https://github.com/users/Jimmybee/projects/new
+- Issues: <https://github.com/Jimmybee/stock-tree-full-stack/issues>
+- Project board (create): <https://github.com/users/Jimmybee/projects/new>
 
 ## High-level scope
 
@@ -25,3 +25,18 @@ See ROADMAP.md for phased delivery.
 - Small PRs linked to Issues.
 - Include tests and screenshots for UI.
 - See .github templates for helpful checklists.
+
+## Development
+
+Prereqs: Ruby 3.3, PostgreSQL (or Docker), Node is not required (importmap), Tailwind via tailwindcss-rails.
+
+Setup
+
+1. Copy env and set secrets
+	- cp .env.example .env
+	- echo "DEVISE_JWT_SECRET_KEY=$(bin/rails secret)" >> .env
+2. Start Postgres (Docker)
+	- docker compose up -d db
+3. Prepare DB and run
+	- bin/rails db:prepare
+	- bin/dev

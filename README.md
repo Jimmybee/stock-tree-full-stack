@@ -1,2 +1,27 @@
-# stock-tree-full-stack
-Full-stack rebuild of Stock Tree: Rails 7 API + Web UI (Hotwire)
+# Stock Tree (Full-Stack)
+
+Full-stack rebuild of Stock Tree: a team-based inventory system with a nested folder tree, products with images/tags/batches, and an integrated web UI.
+
+## Status
+
+New repository scaffolding. Planning and setup tracked in Issues and Project board.
+
+## Quick links
+
+- Issues: https://github.com/Jimmybee/stock-tree-full-stack/issues
+- Project board (create): https://github.com/users/Jimmybee/projects/new
+
+## High-level scope
+
+- Rails 7.1 app (API + HTML) with Hotwire, Tailwind, Devise(+JWT), Pundit
+- Postgres + UUIDs, Active Storage (S3 in prod)
+- Domain: Teams, Folders (tree), Products, Batches, Tags
+- Web UI inside Rails (Turbo/Stimulus)
+
+See ROADMAP.md for phased delivery.
+
+## Contributing
+
+- Small PRs linked to Issues.
+- Include tests and screenshots for UI.
+- See .github templates for helpful checklists.

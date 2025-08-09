@@ -2,13 +2,14 @@ class Api::V1::TeamsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    teams = current_user.teams.order(:name)
+  teams = policy_scope(Team).order(:name)
     render json: { teams: teams.as_json(only: %i[id name]) }
   end
 
   def create
-    team = Team.new(team_params)
-    if team.save
+  team = Team.new(team_params)
+  authorize team
+  if team.save
       TeamsUser.create!(team: team, user: current_user)
       Folders::CreateRoot.call(team)
       render json: { team: team.as_json(only: %i[id name]) }, status: :created

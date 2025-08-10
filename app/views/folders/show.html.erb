@@ -2,7 +2,7 @@
   <div class="w-64 shrink-0">
     <%= render partial: "tree", locals: { folder: @folder } %>
   </div>
-  <div class="flex-1">
+  <turbo-frame id="main" class="flex-1">
     <h2 class="text-lg font-semibold"><%= @folder.name %></h2>
     <div class="mt-4">
       <h3 class="font-medium mb-2">Subfolders</h3>
@@ -14,21 +14,16 @@
     </div>
     <div class="mt-6">
       <h3 class="font-medium mb-2">Products</h3>
-      <div id="products">
-        <% @folder.products.order(:name).limit(50).each do |p| %>
-          <div class="flex items-center gap-3 py-2 border-b">
-            <div class="w-12 h-12 bg-gray-100 rounded overflow-hidden">
-              <% if p.product_image.attached? %>
-                <%= image_tag url_for(p.product_image), class: "w-full h-full object-cover" %>
-              <% end %>
-            </div>
-            <div class="flex-1">
-              <div class="font-medium"><%= p.name %></div>
-              <div class="text-sm text-gray-600">Qty: <%= p.qty %></div>
-            </div>
-          </div>
-        <% end %>
-      </div>
+      <turbo-frame id="products_list">
+        <%# Server-side render initial page so it works without JS too %>
+        <% per_page = 20 %>
+        <% page = (params[:page] || 1).to_i %>
+        <% offset = (page - 1) * per_page %>
+  <% all_products = policy_scope(Product).where(folder_id: @folder.id).includes(:folder, :tags, product_image_attachment: :blob).order(:name) %>
+        <% products = all_products.limit(per_page).offset(offset) %>
+        <% has_next = all_products.count > offset + products.length %>
+        <%= render partial: 'products/list', locals: { products: products, page: page, has_next: has_next, folder: @folder } %>
+      </turbo-frame>
     </div>
-  </div>
+  </turbo-frame>
 </div>

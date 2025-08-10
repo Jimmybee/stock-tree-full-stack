@@ -1,7 +1,25 @@
+/* Base */
+html, body {
+  background: var(--color-bg);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-weight-header);
+}
+
+small, .text-small {
+  font-size: var(--font-size-small);
+  color: var(--color-text-muted);
+}
 /* App Chrome */
 .topbar {
   width: 100%;
-  background-color: rgb(22 101 52);
+  background-color: var(--color-primary);
   color: white;
 }
 
@@ -19,8 +37,8 @@
 
 .navbar {
   width: 100%;
-  background-color: rgb(30 41 59);
-  color: rgb(241 245 249);
+  background-color: #1f2937; /* gray-800 */
+  color: #f1f5f9; /* slate-50 */
 }
 
 .navbar-inner {
@@ -47,27 +65,27 @@
 
 /* Layout */
 .sidebar {
-  background: white;
-  border: 1px solid rgb(226 232 240);
+  background: var(--color-sidebar);
+  border: 1px solid var(--color-border);
   border-radius: 0.25rem;
-  padding: 0.75rem;
+  padding: calc(var(--space-2) - 4px);
 }
 
 .card {
-  background: white;
-  border: 1px solid rgb(226 232 240);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: 0.25rem;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
 }
 
 .card-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgb(226 232 240);
-  font-weight: 600;
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  font-weight: var(--font-weight-header);
 }
 
 .card-body {
-  padding: 1rem;
+  padding: var(--card-padding);
 }
 
 /* Buttons */
@@ -93,25 +111,25 @@
 }
 
 .btn-primary {
-  background-color: rgb(22 163 74);
+  background-color: var(--color-success);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: rgb(21 128 61);
+  filter: brightness(0.9);
 }
 
 .btn-secondary {
-  background-color: rgb(226 232 240);
-  color: rgb(15 23 42);
+  background-color: #e2e8f0; /* slate-200 */
+  color: #0f172a; /* slate-900 */
 }
 
 .btn-secondary:hover {
-  background-color: rgb(203 213 225);
+  background-color: #cbd5e1; /* slate-300 */
 }
 
 .btn-outline {
-  border: 1px solid rgb(203 213 225);
+  border: 1px solid var(--color-border);
   color: rgb(71 85 105);
   background: white;
 }
@@ -155,9 +173,9 @@
 }
 
 .input:focus {
-  outline: 2px solid rgb(22 163 74);
+  outline: 2px solid var(--color-success);
   outline-offset: 2px;
-  border-color: rgb(22 163 74);
+  border-color: var(--color-success);
 }
 
 .select {
@@ -170,9 +188,9 @@
 }
 
 .select:focus {
-  outline: 2px solid rgb(22 163 74);
+  outline: 2px solid var(--color-success);
   outline-offset: 2px;
-  border-color: rgb(22 163 74);
+  border-color: var(--color-success);
 }
 
 /* Tables */
@@ -184,7 +202,7 @@
 
 .table th {
   text-align: left;
-  color: rgb(100 116 139);
+  color: var(--color-text-muted);
   font-weight: 500;
   padding-bottom: 0.5rem;
 }
@@ -192,13 +210,13 @@
 .table td {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  border-top: 1px solid rgb(226 232 240);
+  border-top: 1px solid var(--color-border);
 }
 
 /* Breadcrumb */
 .breadcrumb {
   font-size: 0.875rem;
-  color: rgb(100 116 139);
+  color: var(--color-text-muted);
 }
 
 .breadcrumb a {

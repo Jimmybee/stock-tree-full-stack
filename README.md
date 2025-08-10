@@ -12,10 +12,11 @@ New repository scaffolding. Planning and setup tracked in Issues and Project boa
 
 - Issues: <https://github.com/Jimmybee/stock-tree-full-stack/issues>
 - Project board (create): <https://github.com/users/Jimmybee/projects/new>
+- Wireframe: docs/wireframes/app-shell.md
 
 ## High-level scope
 
-- Rails 7.1 app (API + HTML) with Hotwire, Tailwind, Devise(+JWT), Pundit
+- Rails 7.1 app (API + HTML) with Hotwire, Tailwind, Devise(+JWT), Pundit, jsonapi-serializer
 - Postgres + UUIDs, Active Storage (S3 in prod)
 - Domain: Teams, Folders (tree), Products, Batches, Tags
 - Web UI inside Rails (Turbo/Stimulus)
@@ -47,6 +48,22 @@ Setup
 
 - bin/rails db:prepare
 - bin/dev
+
+### API documentation
+
+- Interactive docs (dev/test): visit /api-docs
+- OpenAPI spec source: swagger/v1/swagger.yaml
+- Consider publishing the artifact via CI for PR previews
+
+### Health checks
+
+- JSON health: GET /health or /healthz returns { ok: true, time: ... }
+
+### Production notes
+
+- Active Storage is configured for S3 in production; set AWS_* env vars
+- CORS origins are controlled via CORS_ORIGINS env var
+- SSL is enforced in production; ensure reverse proxy terminates TLS
 
 ## Common issues
 

@@ -8,7 +8,7 @@
 - Phase 2: Teams & Folders
   - Team membership, root folder service, folder tree CRUD
 - Phase 3: Products
-  - Product CRUD, images, pagination/filtering
+  - Product CRUD, images, pagination/filtering, jsonapi-serializer rendering
 - Phase 4: Web UI
   - Hotwire UI: tree navigation, product list/detail
 - Phase 5: Sync (optional)

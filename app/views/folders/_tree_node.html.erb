@@ -1,0 +1,17 @@
+<li>
+  <div class="flex items-center gap-2">
+    <% if node.subfolders.any? %>
+      <button data-action="click->tree#toggle" data-tree-target="toggle" class="text-sm px-1">▸</button>
+    <% else %>
+      <span class="text-sm px-1 opacity-50">•</span>
+    <% end %>
+    <%= link_to node.name, folder_path(node), data: { turbo_frame: "main" }, class: "hover:underline" %>
+  </div>
+  <% if node.subfolders.any? %>
+    <ul class="ml-4 hidden" data-tree-target="children">
+      <% node.subfolders.order(:name).each do |child| %>
+        <%= render partial: "tree_node", locals: { node: child } %>
+      <% end %>
+    </ul>
+  <% end %>
+</li>

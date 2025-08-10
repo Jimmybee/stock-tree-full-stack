@@ -11,24 +11,47 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <div class="container mx-auto mt-6 px-5">
+  <body class="bg-gray-50">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="font-semibold">Stock Tree</div>
+        <div class="flex items-center space-x-3">
+          <% if user_signed_in? %>
+            <span class="navbar-user">Signed in as <%= current_user.email %></span>
+            <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-secondary btn-sm' %>
+          <% else %>
+            <%= link_to 'Sign in', new_user_session_path, class: 'btn btn-primary btn-sm' %>
+          <% end %>
+        </div>
+      </div>
+    </header>
+    <div class="container mx-auto mt-4 px-5">
       <% flash.each do |type, msg| %>
         <div class="mb-4 p-3 rounded bg-yellow-100 text-yellow-900">
           <%= msg %>
         </div>
       <% end %>
-      <div class="flex justify-end space-x-3">
-        <% if user_signed_in? %>
-          <span class="text-sm text-gray-700">Signed in as <%= current_user.email %></span>
-          <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'px-3 py-1 bg-gray-200 rounded' %>
-        <% else %>
-          <%= link_to 'Sign in', new_user_session_path, class: 'px-3 py-1 bg-blue-600 text-white rounded' %>
-        <% end %>
+    </div>
+    <div class="container mx-auto px-5">
+      <div class="grid grid-cols-12 gap-4">
+        <aside class="col-span-3 hidden md:block">
+          <div class="sidebar">
+            <div class="text-sm font-semibold mb-2">Navigation</div>
+            <ul class="space-y-1 text-sm text-gray-700">
+              <li>Team switcher (placeholder)</li>
+              <li>Folders</li>
+              <li>Products</li>
+            </ul>
+          </div>
+        </aside>
+        <main class="col-span-12 md:col-span-9">
+          <div class="card">
+            <div class="card-body">
+            <%= yield %>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
-    <main class="container mx-auto mt-4 px-5 flex">
-      <%= yield %>
-    </main>
   </body>
 </html>

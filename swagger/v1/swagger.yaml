@@ -1,0 +1,321 @@
+openapi: 3.0.3
+info:
+  title: Stock Tree API
+  version: v1
+  description: JSON API for Stock Tree mobile/web clients
+servers:
+  - url: http://localhost:3000
+    description: Local dev
+paths:
+  /api/login:
+    post:
+      summary: Login and get JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required: [email, password]
+      responses:
+        '200':
+          description: Auth success
+  /api/register:
+    post:
+      summary: Register and get JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+                password_confirmation: { type: string }
+              required: [email, password, password_confirmation]
+      responses:
+        '200':
+          description: Registered
+  /api/v1/user:
+    get:
+      summary: Get current user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user
+    patch:
+      summary: Update current user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Updated user
+  /api/v1/teams:
+    get:
+      summary: List teams
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Teams
+    post:
+      summary: Create team
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: Created team
+  /api/v1/teams/{id}/top_folder:
+    get:
+      summary: Team's top folder contents
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Top folder
+  /api/v1/folders:
+    get:
+      summary: List folders by team
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: team_id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Folders
+    post:
+      summary: Create folder
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: Created folder
+  /api/v1/folders/{id}:
+    get:
+      summary: Show folder contents
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Folder
+    patch:
+      summary: Update folder
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Updated folder
+    delete:
+      summary: Delete folder
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Deleted
+  /api/v1/products:
+    get:
+      summary: List products
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: team_id
+          schema: { type: string, format: uuid }
+        - in: query
+          name: folder_id
+          schema: { type: string, format: uuid }
+        - in: query
+          name: q
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Products
+    post:
+      summary: Create product
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: Created product
+  /api/v1/tags:
+    get:
+      summary: List tags
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: team_id
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Tags
+    post:
+      summary: Create tag
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: Created tag
+  /api/v1/tags/{id}:
+    get:
+      summary: Show tag
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Tag
+    patch:
+      summary: Update tag
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Updated tag
+    delete:
+      summary: Delete tag
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Deleted
+  /api/v1/sync:
+    post:
+      summary: Upsert products and fetch deltas updated after last_sync_time
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                team_id: { type: string, format: uuid }
+                last_sync_time: { type: string, format: date-time }
+                products:
+                  type: array
+                  items:
+                    type: object
+              required: [team_id]
+      responses:
+        '200':
+          description: Upserted and returned updates
+  /api/v1/products/{id}:
+    get:
+      summary: Show product
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Product
+    patch:
+      summary: Update product
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Updated product
+    delete:
+      summary: Delete product
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Deleted
+  /api/v1/products/{product_id}/batches:
+    get:
+      summary: List batches for product
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Batches
+    post:
+      summary: Create batch for product
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '201':
+          description: Created batch
+  /api/v1/products/{product_id}/batches/{id}:
+    patch:
+      summary: Update batch
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema: { type: string, format: uuid }
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Updated batch
+    delete:
+      summary: Delete batch
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema: { type: string, format: uuid }
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Deleted
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

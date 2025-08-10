@@ -1,5 +1,6 @@
 class Api::V1::TeamsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_team, only: [:top_folder]
 
   def index
   teams = policy_scope(Team).order(:name)
@@ -19,9 +20,19 @@ class Api::V1::TeamsController < ApplicationController
   end
   end
 
+  def top_folder
+    authorize @team, :index?
+  @folder = @team.folders.includes(:subfolders, :products).find_by!(parent_id: nil)
+  render json: { folder: FolderSerializer.new(@folder).serializable_hash[:data][:attributes].merge(id: @folder.id) }
+  end
+
   private
 
   def team_params
     params.require(:team).permit(:name)
+  end
+
+  def set_team
+    @team = policy_scope(Team).find(params[:id])
   end
 end

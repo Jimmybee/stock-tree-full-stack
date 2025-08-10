@@ -26,8 +26,8 @@ gem "stimulus-rails"
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"
 
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
+# JSON serialization
+gem "jsonapi-serializer"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
@@ -59,6 +59,7 @@ group :development, :test do
   gem "rubocop", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-performance", require: false
+  gem "rswag-specs"
 end
 
 group :development do
@@ -95,3 +96,5 @@ gem "dotenv-rails"
 
 # AWS SDK for Active Storage S3 in production
 gem "aws-sdk-s3", require: false
+gem "rswag-api"
+gem "rswag-ui"

@@ -22,4 +22,16 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
+
+  after_create :ensure_personal_team
+
+  private
+
+  def ensure_personal_team
+    # Create a default team for the user and link them; create root folder
+    team_name = [first_name, last_name].compact_blank.join(' ').presence || email.split('@').first.capitalize
+    team = Team.create!(name: team_name, custom_fields: {})
+    TeamsUser.create!(team: team, user: self)
+    Folders::CreateRoot.call(team)
+  end
 end

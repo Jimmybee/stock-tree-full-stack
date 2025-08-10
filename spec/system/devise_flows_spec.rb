@@ -13,6 +13,8 @@ RSpec.describe 'Devise flows', type: :system do
     click_button 'Create account'
 
     expect(page).to have_current_path(root_path)
+  # Header should show sign-out and no sign-in link
+  expect(page).to have_button('Sign out')
   end
 
   it 'allows a user to sign in' do

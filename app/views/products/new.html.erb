@@ -1,0 +1,69 @@
+<div class="max-w-3xl">
+  <h1 class="text-xl font-semibold mb-4">New product</h1>
+  <%= form_with model: @product, url: products_path, html: { multipart: true }, class: "space-y-4" do |f| %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <%= f.label :team_id, 'Team', class: 'block text-sm font-medium' %>
+        <%= f.collection_select :team_id, policy_scope(Team).order(:name), :id, :name, { prompt: 'Select team' }, class: 'input px-3 py-2' %>
+      </div>
+      <div>
+        <%= f.label :folder_id, 'Folder (optional)', class: 'block text-sm font-medium' %>
+        <% folders = @product.team_id.present? ? policy_scope(Folder).where(team_id: @product.team_id).order(:name) : policy_scope(Folder).order(:name) %>
+        <%= f.collection_select :folder_id, folders, :id, :name, { include_blank: true }, class: 'input px-3 py-2' %>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <%= f.label :name, class: 'block text-sm font-medium' %>
+        <%= f.text_field :name, class: 'input px-3 py-2' %>
+      </div>
+      <div>
+        <%= f.label :bar_code, 'Barcode', class: 'block text-sm font-medium' %>
+        <%= f.text_field :bar_code, class: 'input px-3 py-2' %>
+      </div>
+    </div>
+    <div>
+      <%= f.label :description, class: 'block text-sm font-medium' %>
+      <%= f.text_area :description, rows: 3, class: 'input px-3 py-2' %>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <%= f.label :qty, 'Quantity', class: 'block text-sm font-medium' %>
+        <%= f.number_field :qty, class: 'input px-3 py-2', value: 0 %>
+      </div>
+      <div>
+        <%= f.label :price_in_minor_unit, 'Price (minor units)', class: 'block text-sm font-medium' %>
+        <%= f.number_field :price_in_minor_unit, class: 'input px-3 py-2' %>
+      </div>
+      <div>
+        <%= f.label :min_level, 'Min level', class: 'block text-sm font-medium' %>
+        <%= f.number_field :min_level, class: 'input px-3 py-2' %>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <%= f.label :batched, class: 'text-sm font-medium' %>
+      <%= f.check_box :batched %>
+    </div>
+    <div>
+      <%= f.label :product_image, 'Image', class: 'block text-sm font-medium' %>
+      <%= f.file_field :product_image, accept: 'image/png,image/jpeg,image/jpg,image/webp', class: 'input px-3 py-2' %>
+    </div>
+    <% if @available_tags.present? %>
+      <div>
+        <span class="block text-sm font-medium mb-1">Tags</span>
+        <div class="flex flex-wrap gap-2">
+          <% @available_tags.each do |t| %>
+            <label class="inline-flex items-center gap-1 text-sm">
+              <%= check_box_tag 'product[tag_ids][]', t.id, false %>
+              <span class="badge badge-muted"><%= t.name %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <div>
+      <%= f.submit 'Create product', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', products_path, class: 'btn btn-secondary ml-2' %>
+    </div>
+  <% end %>
+</div>

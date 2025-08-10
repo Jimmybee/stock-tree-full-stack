@@ -22,6 +22,27 @@ class ProductsController < ApplicationController
   @available_tags = policy_scope(Tag).order(:name)
   end
 
+  def new
+    @product = Product.new
+    # Optional prefill from params
+    @product.team_id = params[:team_id] if params[:team_id]
+    @product.folder_id = params[:folder_id] if params[:folder_id]
+    authorize @product
+  @available_tags = policy_scope(Tag).where(team_id: @product.team_id).order(:name) if @product.team_id
+  end
+
+  def create
+    @product = Product.new(product_params)
+    authorize @product
+    if @product.save
+      redirect_to @product, notice: 'Product created'
+    else
+      @available_tags = policy_scope(Tag).where(team_id: @product.team_id).order(:name) if @product.team_id
+      flash.now[:alert] = @product.errors.full_messages.to_sentence
+      render :new, status: :unprocessable_entity
+    end
+  end
+
   def show
     authorize @product
     @batches = @product.batches.order(:expiry_date)
@@ -47,6 +68,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(tag_ids: [])
+  params.require(:product).permit(:team_id, :folder_id, :name, :description, :qty, :bar_code, :price_in_minor_unit, :min_level, :batched, :product_image, tag_ids: [])
   end
 end

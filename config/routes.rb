@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   # Web UI routes
   resources :folders, only: [:show]
   get "/teams/:id/top_folder", to: "folders#team_root", as: :team_top_folder
-  resources :products, only: [:index, :show, :update] do
+  resources :products, only: [:index, :show, :update, :new, :create] do
     resources :batches, only: [:create, :destroy]
   end
 

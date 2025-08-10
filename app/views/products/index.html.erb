@@ -87,6 +87,10 @@
   </aside>
 
   <section class="flex-1">
+    <div class="flex justify-between items-center mb-3">
+      <h1 class="text-lg font-semibold">Products</h1>
+      <%= link_to 'New product', new_product_path(team_id: params[:team_id], folder_id: params[:folder_id]), class: 'btn btn-primary' %>
+    </div>
     <turbo-frame id="products_list">
       <%= render partial: 'list' %>
     </turbo-frame>

@@ -11,8 +11,8 @@ RSpec.describe 'App shell', type: :system do
     fill_in 'Password', with: 'Password123!'
     click_button 'Sign in'
 
-    expect(page).to have_content('Stock Tree')
-    expect(page).to have_content('Dashboard')
-    expect(page).to have_content('Team switcher (placeholder)')
+  expect(page).to have_content('Stock Tree')
+  expect(page).to have_link('Dashboard')
+  expect(page).to have_link('Products')
   end
 end

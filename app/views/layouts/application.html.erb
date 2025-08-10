@@ -38,10 +38,16 @@
         <aside class="col-span-3 hidden md:block">
           <div class="sidebar">
             <div class="text-sm font-semibold mb-2">Navigation</div>
-            <ul class="space-y-1 text-sm text-gray-700">
-              <li>Team switcher (placeholder)</li>
-              <li>Folders</li>
-              <li>Products</li>
+            <ul class="nav-list">
+              <li><%= nav_link_to('Dashboard', root_path, icon: '🏠') %></li>
+              <li>
+                <% if primary_team %>
+                  <%= nav_link_to('Top folder', team_top_folder_path(primary_team), icon: '🗂️') %>
+                <% else %>
+                  <span class="nav-link disabled">No team yet</span>
+                <% end %>
+              </li>
+              <li><%= nav_link_to('Products', products_path, icon: '📦') %></li>
             </ul>
           </div>
         </aside>

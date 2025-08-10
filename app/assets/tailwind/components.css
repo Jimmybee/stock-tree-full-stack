@@ -1,5 +1,6 @@
 /* Base */
-html, body {
+html,
+body {
   background: var(--color-bg);
 }
 
@@ -8,14 +9,21 @@ body {
   font-weight: var(--font-weight-body);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: var(--font-weight-header);
 }
 
-small, .text-small {
+small,
+.text-small {
   font-size: var(--font-size-small);
   color: var(--color-text-muted);
 }
+
 /* App Chrome */
 .topbar {
   width: 100%;
@@ -37,8 +45,10 @@ small, .text-small {
 
 .navbar {
   width: 100%;
-  background-color: #1f2937; /* gray-800 */
-  color: #f1f5f9; /* slate-50 */
+  background-color: #1f2937;
+  /* gray-800 */
+  color: #f1f5f9;
+  /* slate-50 */
 }
 
 .navbar-inner {
@@ -120,12 +130,15 @@ small, .text-small {
 }
 
 .btn-secondary {
-  background-color: #e2e8f0; /* slate-200 */
-  color: #0f172a; /* slate-900 */
+  background-color: #e2e8f0;
+  /* slate-200 */
+  color: #0f172a;
+  /* slate-900 */
 }
 
 .btn-secondary:hover {
-  background-color: #cbd5e1; /* slate-300 */
+  background-color: #cbd5e1;
+  /* slate-300 */
 }
 
 .btn-outline {

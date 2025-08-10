@@ -21,7 +21,8 @@
 
 <div class="mt-3">
   <% if defined?(@pagy) && @pagy %>
-    <%== pagy_nav(@pagy) %>
+    <%# Make pagy links update just the products_list frame %>
+    <%== pagy_nav(@pagy, link_extra: 'data-turbo-frame="products_list"') %>
   <% else %>
     <% page = local_assigns[:page] || 1 %>
     <% has_next = local_assigns[:has_next] || false %>

@@ -1,10 +1,94 @@
-<div data-controller="filter">
-  <div class="flex gap-2 mb-3">
-    <input type="text" name="q" placeholder="Search..." data-filter-target="q" data-action="input->filter#debounced" class="border px-2 py-1 rounded w-64" value="<%= params[:q] %>" />
-    <input type="number" name="min_level" placeholder="Min level" data-filter-target="minLevel" data-action="input->filter#debounced" class="border px-2 py-1 rounded w-32" value="<%= params[:min_level] %>" />
-  </div>
+<div class="flex gap-6" data-controller="filter">
+  <aside class="w-72 shrink-0">
+    <div class="card p-3">
+      <div class="font-semibold mb-2">Filters</div>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Search</label>
+          <input type="text" name="q" placeholder="Search products or barcode" data-filter-target="q" data-action="input->filter#debounced" class="border px-2 py-1 rounded w-full" value="<%= params[:q] %>" />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Min level</label>
+          <input type="number" name="min_level" placeholder="Min level" data-filter-target="minLevel" data-action="input->filter#debounced" class="border px-2 py-1 rounded w-full" value="<%= params[:min_level] %>" />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Folder</label>
+          <div class="border rounded p-2 max-h-72 overflow-auto">
+            <ul class="space-y-1" data-controller="tree">
+              <% @root_folders.each do |folder| %>
+                <li>
+                  <div class="flex items-center gap-2">
+                    <% if folder.subfolders.any? %>
+                      <button data-action="click->tree#toggle" data-tree-target="toggle" class="text-sm px-1">▸</button>
+                    <% else %>
+                      <span class="text-sm px-1 opacity-50">•</span>
+                    <% end %>
+                    <% active = params[:folder_id].to_s == folder.id %>
+                    <%= link_to folder.name,
+                                products_path(request.query_parameters.merge(folder_id: folder.id)),
+                                data: { turbo_frame: 'products_list' },
+                                class: ["hover:underline", ("font-semibold" if active)].compact.join(' ') %>
+                  </div>
+                  <% if folder.subfolders.any? %>
+                    <ul class="ml-4 hidden" data-tree-target="children">
+                      <% folder.subfolders.order(:name).each do |child| %>
+                        <li>
+                          <div class="flex items-center gap-2">
+                            <% if child.subfolders.any? %>
+                              <button data-action="click->tree#toggle" data-tree-target="toggle" class="text-sm px-1">▸</button>
+                            <% else %>
+                              <span class="text-sm px-1 opacity-50">•</span>
+                            <% end %>
+                            <% active_child = params[:folder_id].to_s == child.id %>
+                            <%= link_to child.name,
+                                        products_path(request.query_parameters.merge(folder_id: child.id)),
+                                        data: { turbo_frame: 'products_list' },
+                                        class: ["hover:underline", ("font-semibold" if active_child)].compact.join(' ') %>
+                          </div>
+                          <% if child.subfolders.any? %>
+                            <ul class="ml-4 hidden" data-tree-target="children">
+                              <% child.subfolders.order(:name).each do |grand| %>
+                                <li>
+                                  <div class="flex items-center gap-2">
+                                    <span class="text-sm px-1 opacity-50">•</span>
+                                    <% active_grand = params[:folder_id].to_s == grand.id %>
+                                    <%= link_to grand.name,
+                                                products_path(request.query_parameters.merge(folder_id: grand.id)),
+                                                data: { turbo_frame: 'products_list' },
+                                                class: ["hover:underline", ("font-semibold" if active_grand)].compact.join(' ') %>
+                                  </div>
+                                </li>
+                              <% end %>
+                            </ul>
+                          <% end %>
+                        </li>
+                      <% end %>
+                    </ul>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Tags</label>
+          <div class="border rounded p-2 max-h-40 overflow-auto space-y-1">
+      <% selected_tag_ids = Array(params[:tag_ids]).map(&:to_s) %>
+            <% @available_tags.each do |tag| %>
+              <label class="flex items-center gap-2 text-sm">
+        <input type="checkbox" value="<%= tag.id %>" <%= 'checked' if selected_tag_ids.include?(tag.id.to_s) %> data-filter-target="tag" data-action="change->filter#submit" />
+                <span><%= tag.name %></span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
 
-  <turbo-frame id="products_list">
-    <%= render partial: 'list' %>
-  </turbo-frame>
+  <section class="flex-1">
+    <turbo-frame id="products_list">
+      <%= render partial: 'list' %>
+    </turbo-frame>
+  </section>
 </div>

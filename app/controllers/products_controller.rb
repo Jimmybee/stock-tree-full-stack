@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :update]
 
   def index
-    products = policy_scope(Product)
+  products = policy_scope(Product)
     products = products.where(folder_id: params[:folder_id]) if params[:folder_id].present?
     products = products.joins(:tags).where(tags: { id: params[:tag_ids] }) if params[:tag_ids].present?
     if params[:q].present?
@@ -16,6 +16,10 @@ class ProductsController < ApplicationController
     products = products.includes(:folder, :tags, product_image_attachment: :blob).distinct.order(updated_at: :desc)
 
     @pagy, @products = pagy(products)
+
+  # For filters UI
+  @root_folders = policy_scope(Folder).where(parent_id: nil).includes(:subfolders)
+  @available_tags = policy_scope(Tag).order(:name)
   end
 
   def show
